@@ -12,7 +12,7 @@ class Config(object):
     OWNER_ID = int(os.environ.get("OWNER_ID", ""))
     PORT = os.environ.get("PORT", "8080")
     DATABASE_URL = os.environ.get("DATABASE_URL", "")
-    DATABSE_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
+    DATABASE_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
     FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "0"))
     TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
     START_MSG = os.environ.get("START_MESSAGE", "Hello {first}\n\nI can store private files in specified channels, and other users can access them from special links.")
