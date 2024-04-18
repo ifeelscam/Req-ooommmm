@@ -43,7 +43,7 @@ I Guess This Will Be Usefull For Many People.....😇.
 ### Setup
 
 - Add the bot to Database Channel with all permission
-- Add bot to ForceSub channel as Admin with Invite Users via Link Permission if you enabled ForceSub 
+- Add bot to request Sub channel as Admin with Invite Users via Link Permission if you enabled request Sub 
 
 ##
 ### Installation
@@ -63,16 +63,14 @@ I Guess This Will Be Usefull For Many People.....😇.
 
 
 
-   https://render.com/deploy?repo=https://github.com/Avuf/File-sharing-Bot
-
 The fastest way to deploy the application is to click the **Deploy to Koyeb** button below.
 
 
-[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/CodeXBotz/File-Sharing-Bot&branch=koyeb&name=filesharingbot)
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=https://github.com/CodeXBotz/File-Sharing-Bot&branch=koyeb&name=filesharingbot)
 
 ## Deploy To Render 
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Avuf/File-sharing-Bot)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/CodeXBotz/File-Sharing-Bot)
 
 
 #### Deploy in your VPS
@@ -87,26 +85,23 @@ python3 main.py
 ### Admin Commands
 
 ```
-/start - start the bot or get posts
-
-/batch - create link for more than one posts
-
-/genlink - create link for one post
-
-/users - view bot statistics
-
-/broadcast - broadcast any messages to bot users
-
-/stats - checking your bot uptime
+start - start the bot or get posts
+batch - create link for more than one posts
+genlink - create link for one post
+users - view bot statistics
+broadcast - broadcast any messages to bot users
+stats - checking your bot uptime
 ```
 
 ### Variables
 
 * `API_HASH` Your API Hash from my.telegram.org
 * `APP_ID` Your API ID from my.telegram.org
-* `TG_BOT_TOKEN` Your bot token from @BotFather
+* `BOT_TOKEN` Your bot token from @BotFather
 * `OWNER_ID` Must enter Your Telegram Id
 * `CHANNEL_ID` Your Channel ID eg:- -100xxxxxxxx
+* `CHANNEL_ONE` Your request to sub Channel ID eg:- -100xxxxxxx
+* `CHANNEL_TWO` Your request to sub Channel ID eg:- -100xxxxxxx
 * `DATABASE_URL` Your mongo db url
 * `DATABASE_NAME` Your mongo db session name
 * `ADMINS` Optional: A space separated list of user_ids of Admins, they can only create links
