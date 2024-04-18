@@ -1,6 +1,9 @@
 import motor.motor_asyncio
 from config import Config  #DB_URI, DB_NAME, ADMINS
 
+DATABASE_URL = Config.DATABASE_URL
+DATABASE_NAME = Config.DATABASE_NAME
+
 class Database:
     def __init__(self, uri, database_name):
         self.client = motor.motor_asyncio.AsyncIOMotorClient(uri)
@@ -66,4 +69,4 @@ class Database:
     async def delete_all_two(self):
         await self.req_two.delete_many({})
 
-db = Database(Config.DATABASE_URL, Config.DATABASE_NAME)
+db = Database(DATABASE_URL,DATABASE_NAME)
