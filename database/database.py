@@ -66,4 +66,4 @@ class Database:
     async def delete_all_two(self):
         await self.req_two.delete_many({})
 
-db = Database(Config.DATABSE_URL, Config.DATABASE_NAME)
+db = Database(Config.DATABASE_URL, Config.DATABASE_NAME)
