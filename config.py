@@ -7,8 +7,8 @@ class Config(object):
     APP_ID = int(os.environ.get("APP_ID", ""))
     API_HASH = os.environ.get("API_HASH", "")
     CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "")) # db Channel id 
-    CHANNEL_ONE = int(os.environ.get("CHANNEL_ONE", "")) request to sub Channel id
-    CHANNEL_TWO = int(os.environ.get("CHANNEL_TWO", "")) request to sub Channel id
+    CHANNEL_ONE = int(os.environ.get("CHANNEL_ONE", "")) #request to sub Channel id
+    CHANNEL_TWO = int(os.environ.get("CHANNEL_TWO", "")) #request to sub Channel id
     OWNER_ID = int(os.environ.get("OWNER_ID", ""))
     PORT = os.environ.get("PORT", "8080")
     DATABASE_URL = os.environ.get("DATABASE_URL", "")
