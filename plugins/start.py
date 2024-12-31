@@ -61,7 +61,7 @@ async def start_command(client: Client, message):
                     "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_two)
             ]]
             try:
-                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db is_requested_one(message):
+                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_one(message):
                     btn.append(
                           [ 
                         InlineKeyboardButton(
