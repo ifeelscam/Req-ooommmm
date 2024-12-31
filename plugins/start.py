@@ -1,5 +1,5 @@
 #(©)CodeXBotz
-# @ps_updates Thanks for adding request to sub
+
 
 
 
@@ -11,9 +11,9 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, 
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 
 from bot import Bot
-from config import Config #ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, CHANNEL_ONE, CHANNEL_TWO
+from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, CHANNEL_ONE, CHANNEL_TWO
 from helper_func import encode, decode, get_messages
-from database.database import db #add_user, del_user, full_userbase, present_user
+from database.database import add_user, del_user, full_userbase, present_user, is_requested_one, is_requested_two, delete_all_one, delete_all_two
 
 
 
@@ -21,33 +21,26 @@ from database.database import db #add_user, del_user, full_userbase, present_use
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message):
     id = message.from_user.id
-    if not await db.present_user(id):
+    if not await present_user(id):
         try:
-            await db.add_user(id)
+            await add_user(id)
         except:
             pass
     text = message.text
     if len(text)>7:
-        if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_one(message):
+        if client.link_one is not None and message.from_user.id not in ADMINS and not await is_requested_one(message):
             btn = [[
                 InlineKeyboardButton(
-                    "🎗 Rᴇǫᴜᴇꜱᴛ Tᴏ Jᴏɪɴ Cʜᴀɴɴᴇʟ 1 🎗", url=client.link_one)
-            ]]
-            try:
-                if client.link_two is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_two(message):
-                    btn.append(
-                          [
+                    "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_one),
                         InlineKeyboardButton(
-                            "🎗 Rᴇǫᴜᴇꜱᴛ Tᴏ Jᴏɪɴ Cʜᴀɴɴᴇʟ 2 🎗", url=client.link_two)
-                          ]
-                    )
-            except Exception as e:
-                print(e)
+                            "Jᴏɪɴ Cʜᴀɴɴᴇʟ 2", url=client.link_two)
+                          ],[ InlineKeyboardButton(" Jᴏɪɴ Cʜᴀɴɴᴇʟ 3 ", url="https://t.me/+QlEBszG3HLBhNjNl")]
+            ]
             try:
                 btn.append(
                       [
                         InlineKeyboardButton(
-                             text = 'Try Again',
+                             text = '♻️ Tʀʏ Aɢᴀɪɴ ♻️',
                              url = f"https://t.me/{client.username}?start={message.command[1]}"
                         )
                     ]
@@ -56,22 +49,23 @@ async def start_command(client: Client, message):
                 pass
             await client.send_message(
                 chat_id=message.from_user.id,
-                text="**Please request Join the Following Channels to use this Bot!**",
+                text="Kᴏɴɴɪᴄʜɪᴡᴀ {mention}👋,\n\nᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴏɴ ♻️ Try Again ♻️ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜰɪʟᴇ.\n\n𝐃ᴇᴠᴇʟᴏᴘᴇᴅ 𝐁ʏ : @OutlawBots",
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=btn),
                 parse_mode=ParseMode.MARKDOWN
             )
             return
-        if client.link_two is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_two(message):
+          
+        if client.link_two is not None and message.from_user.id not in ADMINS and not await is_requested_two(message):
             btn = [[
                 InlineKeyboardButton(
-                    "🎗 Rᴇǫᴜᴇꜱᴛ Tᴏ Jᴏɪɴ Cʜᴀɴɴᴇʟ 1 🎗", url=client.link_two)
+                    "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_two)
             ]]
             try:
-                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_one(message):
+                if client.link_one is not None and message.from_user.id not in ADMINS and not await is_requested_one(message):
                     btn.append(
-                          [
+                          [ 
                         InlineKeyboardButton(
-                            "🎗 Rᴇǫᴜᴇꜱᴛ Tᴏ Jᴏɪɴ Cʜᴀɴɴᴇʟ 2", url=client.link_one)
+                            "Jᴏɪɴ Cʜᴀɴɴᴇʟ 2", url=client.link_one)
                           ]
                     )
             except Exception as e:
@@ -89,7 +83,7 @@ async def start_command(client: Client, message):
                 pass
             await client.send_message(
                 chat_id=message.from_user.id,
-                text="**Please request Join the Following Channels to use this Bot!**",
+                text="Kᴏɴɴɪᴄʜɪᴡᴀ {mention}👋,\n\nᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴏɴ Try Again ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜰɪʟᴇ.\n\n𝐃ᴇᴠᴇʟᴏᴘᴇᴅ 𝐁ʏ : @OutlawBots",
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=btn),
                 parse_mode=ParseMode.MARKDOWN
             )
@@ -132,12 +126,12 @@ async def start_command(client: Client, message):
 
         for msg in messages:
 
-            if bool(Config.CUSTOM_CAPTION) & bool(msg.document):
-                caption = Config.CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
+            if bool(CUSTOM_CAPTION) & bool(msg.document):
+                caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
             else:
                 caption = "" if not msg.caption else msg.caption.html
 
-            if Config.DISABLE_CHANNEL_BUTTON:
+            if DISABLE_CHANNEL_BUTTON:
                 reply_markup = msg.reply_markup
             else:
                 reply_markup = None
@@ -153,15 +147,15 @@ async def start_command(client: Client, message):
         return
     else:
         reply_markup = InlineKeyboardMarkup(
-            [
+           [
                 [
-                    InlineKeyboardButton("😊 About Me", callback_data = "about"),
-                    InlineKeyboardButton("🔒 Close", callback_data = "close")
+                    InlineKeyboardButton("🤖 ᴀʙᴏᴜᴛ ᴍᴇ", callback_data = "about"),
+                    InlineKeyboardButton("🔒 ᴄʟᴏsᴇ", callback_data = "close")
                 ]
             ]
         )
         await message.reply_text(
-            text = Config.START_MSG.format(
+            text = START_MSG.format(
                 first = message.from_user.first_name,
                 last = message.from_user.last_name,
                 username = None if not message.from_user.username else '@' + message.from_user.username,
@@ -184,16 +178,16 @@ REPLY_ERROR = """<code>Use this command as a replay to any telegram message with
 #=====================================================================================##
 
 
-@Bot.on_message(filters.command('users') & filters.private & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
     msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
-    users = await db.full_userbase()
+    users = await full_userbase()
     await msg.edit(f"{len(users)} users are using this bot")
 
-@Bot.on_message(filters.private & filters.command('broadcast') & filters.user(Config.ADMINS))
+@Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
     if message.reply_to_message:
-        query = await db.full_userbase()
+        query = await full_userbase()
         broadcast_msg = message.reply_to_message
         total = 0
         successful = 0
@@ -237,15 +231,16 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         await msg.delete()
 
 
-@Bot.on_message(filters.command('del_one') & filters.private & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('purge_one') & filters.private & filters.user(ADMINS))
 async def purge_req_one(bot, message):
     r = await message.reply("`processing...`")
-    await db.delete_all_one()
+    await delete_all_one()
     await r.edit("**Req db Cleared**" )
 
 
-@Bot.on_message(filters.command('del_two') & filters.private & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('purge_two') & filters.private & filters.user(ADMINS))
 async def purge_req_two(bot, message):
     r = await message.reply("`processing...`")
-    await db.delete_all_two()
+    await delete_all_two()
     await r.edit("**Req db Cleared**" )
+    
