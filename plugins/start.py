@@ -147,11 +147,13 @@ async def start_command(client: Client, message):
         return
     else:
         reply_markup = InlineKeyboardMarkup(
-           [
-                [
-                    InlineKeyboardButton("🤖 ᴀʙᴏᴜᴛ ᴍᴇ", callback_data = "about"),
-                    InlineKeyboardButton("🔒 ᴄʟᴏsᴇ", callback_data = "close")
-                ]
+            [
+    
+    [
+                    InlineKeyboardButton("⚡️ ᴀʙᴏᴜᴛ", callback_data = "about"),
+                    InlineKeyboardButton('🍁 ᴅᴇᴠʟᴏᴘᴇʀ', url='https://t.me/outlawbots')
+        
+    ]
             ]
         )
         await message.reply_text(
