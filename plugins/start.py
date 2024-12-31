@@ -135,23 +135,8 @@ async def start_command(client: Client, message):
                 reply_markup = msg.reply_markup
             else:
                 reply_markup = None
-
-            button_text = "• ᴀɴɪᴍᴇ ʀᴀᴠᴇɴ •"
-            button_url = "https://t.me/Anime_Raven"
-            reply_markup = InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton(text=button_text, url=button_url)]
-                ]
-            )
-
             try:
-                await msg.copy(
-                    chat_id=message.from_user.id,
-                    caption=caption,
-                    parse_mode=ParseMode.HTML,
-                    reply_markup=reply_markup,  # Add inline keyboard
-                    protect_content=PROTECT_CONTENT,
-                )
+                await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
                 await asyncio.sleep(0.5)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
