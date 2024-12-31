@@ -13,7 +13,7 @@ from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 from bot import Bot
 from config import Config #ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, CHANNEL_ONE, CHANNEL_TWO
 from helper_func import encode, decode, get_messages
-from database.database import add_user, del_user, full_userbase, present_user, is_requested_one, is_requested_two, delete_all_one, delete_all_two
+from database.database import db #add_user, del_user, full_userbase, present_user, is_requested_one, is_requested_two, delete_all_one, delete_all_two
 
 
 
@@ -21,14 +21,14 @@ from database.database import add_user, del_user, full_userbase, present_user, i
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message):
     id = message.from_user.id
-    if not await present_user(id):
+    if not await db.present_user(id):
         try:
-            await add_user(id)
+            await db.add_user(id)
         except:
             pass
     text = message.text
     if len(text)>7:
-        if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await is_requested_one(message):
+        if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_one(message):
             btn = [[
                 InlineKeyboardButton(
                     "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_one),
@@ -55,13 +55,13 @@ async def start_command(client: Client, message):
             )
             return
           
-        if client.link_two is not None and message.from_user.id not in Config.ADMINS and not await is_requested_two(message):
+        if client.link_two is not None and message.from_user.id not in Config.ADMINS and not await db.is_requested_two(message):
             btn = [[
                 InlineKeyboardButton(
                     "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_two)
             ]]
             try:
-                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await is_requested_one(message):
+                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await db is_requested_one(message):
                     btn.append(
                           [ 
                         InlineKeyboardButton(
@@ -197,13 +197,13 @@ REPLY_ERROR = """<code>Use this command as a replay to any telegram message with
 @Bot.on_message(filters.command('users') & filters.private & filters.user(Config.ADMINS))
 async def get_users(client: Bot, message: Message):
     msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
-    users = await full_userbase()
+    users = await db.full_userbase()
     await msg.edit(f"{len(users)} users are using this bot")
 
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(Config.ADMINS))
 async def send_text(client: Bot, message: Message):
     if message.reply_to_message:
-        query = await full_userbase()
+        query = await db.full_userbase()
         broadcast_msg = message.reply_to_message
         total = 0
         successful = 0
@@ -250,13 +250,13 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
 @Bot.on_message(filters.command('purge_one') & filters.private & filters.user(Config.ADMINS))
 async def purge_req_one(bot, message):
     r = await message.reply("`processing...`")
-    await delete_all_one()
+    await db.delete_all_one()
     await r.edit("**Req db Cleared**" )
 
 
 @Bot.on_message(filters.command('purge_two') & filters.private & filters.user(Config.ADMINS))
 async def purge_req_two(bot, message):
     r = await message.reply("`processing...`")
-    await delete_all_two()
+    await db.delete_all_two()
     await r.edit("**Req db Cleared**" )
     
