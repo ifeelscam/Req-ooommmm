@@ -32,7 +32,7 @@ async def channel_post(client: Client, message: Message):
 
     await reply_text.edit(f"<b><pre>**Here is your link**\n\n**{link}**</pre>\n<u>Tap To Copy Code to copy Link</u>\n\n⚡ ᴅᴇᴠʟᴏᴘᴇʀ : <a href=https://t.me/HateXfree>ᯓ ʜᴀᴛᴇ ғʀᴇᴇ ᡣ𐭩</a></b>", reply_markup=reply_markup, disable_web_page_preview = True)
 
-    if not DISABLE_CHANNEL_BUTTON:
+    if not Config.DISABLE_CHANNEL_BUTTON:
         await post_message.edit_reply_markup(reply_markup)
 
 @Bot.on_message(filters.channel & filters.incoming & filters.chat(Config.CHANNEL_ID))
