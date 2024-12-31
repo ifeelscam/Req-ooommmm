@@ -28,7 +28,7 @@ async def start_command(client: Client, message):
             pass
     text = message.text
     if len(text)>7:
-        if client.link_one is not None and message.from_user.id not in ADMINS and not await is_requested_one(message):
+        if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await is_requested_one(message):
             btn = [[
                 InlineKeyboardButton(
                     "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_one),
@@ -55,13 +55,13 @@ async def start_command(client: Client, message):
             )
             return
           
-        if client.link_two is not None and message.from_user.id not in ADMINS and not await is_requested_two(message):
+        if client.link_two is not None and message.from_user.id not in Config.ADMINS and not await is_requested_two(message):
             btn = [[
                 InlineKeyboardButton(
                     "Jᴏɪɴ Cʜᴀɴɴᴇʟ 1", url=client.link_two)
             ]]
             try:
-                if client.link_one is not None and message.from_user.id not in ADMINS and not await is_requested_one(message):
+                if client.link_one is not None and message.from_user.id not in Config.ADMINS and not await is_requested_one(message):
                     btn.append(
                           [ 
                         InlineKeyboardButton(
@@ -126,8 +126,8 @@ async def start_command(client: Client, message):
 
         for msg in messages:
 
-            if bool(CUSTOM_CAPTION) & bool(msg.document):
-                caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
+            if bool(Config.CUSTOM_CAPTION) & bool(msg.document):
+                caption = Config.CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
             else:
                 caption = "" if not msg.caption else msg.caption.html
 
@@ -171,7 +171,7 @@ async def start_command(client: Client, message):
             ]
         )
         await message.reply_text(
-            text = START_MSG.format(
+            text = Config.START_MSG.format(
                 first = message.from_user.first_name,
                 last = message.from_user.last_name,
                 username = None if not message.from_user.username else '@' + message.from_user.username,
@@ -194,13 +194,13 @@ REPLY_ERROR = """<code>Use this command as a replay to any telegram message with
 #=====================================================================================##
 
 
-@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
+@Bot.on_message(filters.command('users') & filters.private & filters.user(Config.ADMINS))
 async def get_users(client: Bot, message: Message):
     msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
     users = await full_userbase()
     await msg.edit(f"{len(users)} users are using this bot")
 
-@Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
+@Bot.on_message(filters.private & filters.command('broadcast') & filters.user(Config.ADMINS))
 async def send_text(client: Bot, message: Message):
     if message.reply_to_message:
         query = await full_userbase()
@@ -247,14 +247,14 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         await msg.delete()
 
 
-@Bot.on_message(filters.command('purge_one') & filters.private & filters.user(ADMINS))
+@Bot.on_message(filters.command('purge_one') & filters.private & filters.user(Config.ADMINS))
 async def purge_req_one(bot, message):
     r = await message.reply("`processing...`")
     await delete_all_one()
     await r.edit("**Req db Cleared**" )
 
 
-@Bot.on_message(filters.command('purge_two') & filters.private & filters.user(ADMINS))
+@Bot.on_message(filters.command('purge_two') & filters.private & filters.user(Config.ADMINS))
 async def purge_req_two(bot, message):
     r = await message.reply("`processing...`")
     await delete_all_two()
